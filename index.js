@@ -43,7 +43,7 @@ function showSuggest(suggestList) {
 
 async function makeRequest(request) {
     if (request !== '') {
-        let response = await fetch(`http://autocomplete.travelpayouts.com/places2?term=${request}&locale=ru&types[]=city`);
+        let response = await fetch(`http://autocomplete.travelpayouts.com/places2?term=${request}&locale=ru&types[]=city,airport`);
         if (response.ok)
             return response.json();
     }
@@ -68,8 +68,16 @@ function debounce(func, wait, immediate) {
 function getSuggestList(data) {
     let result = [];
     if (data) {
-        for (let item of data)
-            result.push(item.name + ' ' + item.code);
+        for (let item of data) {
+            let resItem = item.name;
+            if (item.type === 'airport') {
+                if (item.name === item.city_name)
+                    continue;
+                resItem += ` (${item.city_name})`;
+            }
+            resItem += ` ${item.code}`;
+            result.push(resItem);
+        }
         return result;
     }
     else return [];
@@ -79,7 +87,8 @@ window.addEventListener('keydown', function (e) {
     if (suggestBlock.style.display !== 'none')
     {
         let focused = suggestBlock.querySelector('.focused');
-        if (e.code === 'ArrowDown' || e.code === 'ArrowUp') {            
+        if (e.code === 'ArrowDown' || e.code === 'ArrowUp') { 
+            e.preventDefault();
             if (focused === null) {
                 if (e.code === 'ArrowDown')
                     suggestBlock.firstChild.classList.add('focused');
