@@ -20,25 +20,25 @@ body {
     border: none;
     padding: 0;
     border-radius: 10px;
-    padding-left: 5px;
+    padding-left: 5px;    
 }
 
 .suggest-block {
     border-top: 1px solid;
     border-color: gray;
     background-color: white;
-    width: 100%;
+    width: calc(100% + 5px);
     display: none;
     flex-flow: column nowrap;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     overflow: hidden;
-    padding-left: 5px;
 }
 
 .suggest-block__item {
     font-size: 2vh;
     transition: 0.3s;
+    padding-left: 5px;
 }
 
 .suggest-block__item:hover {
